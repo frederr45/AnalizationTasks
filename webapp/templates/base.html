@@ -1,0 +1,30 @@
+<html>
+    <head>
+        <title>
+            {{ page_title }}
+        </title>
+    </head>
+    <body style="max-width: 900px; margin: auto;">
+        <header style="font-size: 16mm;">
+            {{ page_title }} <br>
+        </header>
+        <main>
+            <div>
+            <div style="font-size: 6mm;">
+                {{ descr_task }} <br>
+            </div>
+            
+            {% block welcome %}
+            {% endblock welcome %}
+            {% block task1 %}
+            {% endblock task1 %}
+            {% block task2 %}
+            {% endblock task2 %}
+            {% block task3 %}
+            {% endblock task3 %}
+            </div>
+        </main>
+        <footer>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block task3 %}
+    <div>
+    1. Импорт библитотек
+    <pre><b>
+        import pandas as pd
+        from sklearn.cluster import KMeans
+        from sklearn.preprocessing import StandardScaler
+    </pre></b>
+    2. Считывание и преобразование данных
+    <pre><b>
+        df = pd.read_excel('Задача.xlsx')
+        columns = ['Person', 'Age', 'Driving experience', 'Loss', 'Salary level']
+        data = pd.DataFrame()
+        for col in zip(df.columns, columns):
+            data[col[1]] = df[col[0]]
+        persons = list(data.pop('Person'))
+    </pre></b>
+    3. Упорядочивание данных, установка кол-ва кластеров, распределение кластеров с помощью к-ближайших соседей
+    <pre><b>
+        scaler = StandardScaler()
+        X = scaler.fit_transform(data)
+        n_clusters = 3
+        km = KMeans(n_clusters=n_clusters)
+        data['Claster'] = km.fit_predict(X)
+
+        data['Persons'] = persons
+    </pre></b>
+    4. Средние показатели по каждой группе
+    <pre><b>
+        dict_ = {
+            0: {"Возраст, лет": data[data["Claster"] == 0]["Age"].median(),
+                "Опыт вождения, лет": data[
+                    data["Claster"] == 0]["Driving experience"].median(),
+                "Убыточность, %": data[data["Claster"] == 0]["Loss"].median(),
+                "Уровень з/п, руб/год": data[
+                    data["Claster"] == 0]["Salary level"].median()},
+            1: {"Возраст, лет": data[data["Claster"] == 1]["Age"].median(),
+                "Опыт вождения, лет": data[
+                    data["Claster"] == 1]["Driving experience"].median(),
+                "Убыточность, %": data[data["Claster"] == 1]["Loss"].median(),
+                "Уровень з/п, руб/год": data[
+                    data["Claster"] == 1]["Salary level"].median()},
+            2: {"Возраст, лет": data[data["Claster"] == 2]["Age"].median(),
+                "Опыт вождения, лет": data[
+                    data["Claster"] == 2]["Driving experience"].median(),
+                "Убыточность, %": data[data["Claster"] == 2]["Loss"].median(),
+                "Уровень з/п, руб/год": data[
+                    data["Claster"] == 2]["Salary level"].median()}
+            }
+
+    </pre></b>
+        {% for i in dict_.keys() %}
+        <li>
+            {{ i }}: {% for j in dict_[i].keys() %}<br> {{ j }} - {{ dict_[i][j] }}  {% endfor %}
+        </li> 
+        {% endfor %}
+    </div>
+    <div>
+        <b>Описание групп:</b> Анализируя средние показатели по группам можно сделать вывод, что:
+        <li>Группа молодых водителей со средним возрастом 26 лет, стажем вождения ~5 лет и средним доходом приносят наибольшие убытки (301,5 %)</li>
+        <li>Группа водителей со средним возрастом 57 лет, стажем вождения ~30 лет и высоким доходом приносят наименьшие убытки (62 %)</li>
+        <li>Группа пожилых водителей со средним возрастом 70 лет, стажем вождения ~46 лет и пенсионным доходом приносят средние убытки (153 %)</li>
+
+    </div>
+    <p><a href="/">START PAGE</a></p> 
+{% endblock task3 %}
